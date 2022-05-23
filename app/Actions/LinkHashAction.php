@@ -6,8 +6,8 @@ namespace App\Actions;
 
 class LinkHashAction
 {
-    public function __invoke($original_link) {
-        // TODO: hash link
-        return substr($original_link, 0, 6);
+    public function __invoke($original_link)
+    {
+        return substr(md5($original_link), 0, 6);
     }
 }

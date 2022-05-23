@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LinkController;
+use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,4 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+
+Route::middleware(CorsMiddleware::class)->group(function() {
+    Route::post('/link', [LinkController::class, 'hash']);
+    Route::get('/link', [LinkController::class, 'index']);
+});
+
+
 Route::get('/{hash}', [LinkController::class, 'redirect']);
+

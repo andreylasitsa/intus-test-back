@@ -9,10 +9,15 @@
         "prod": "npm run production",
         "production": "mix --production"
     },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "vue": "^3.2.33"
+    },
     "devDependencies": {
-        "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "postcss": "^8.1.14",
+        "vue": "^3.2.33",
+        "vue-loader": "^16.8.3"
     }
 }
