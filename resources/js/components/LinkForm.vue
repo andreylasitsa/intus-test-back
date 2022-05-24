@@ -12,26 +12,26 @@
 import axios from 'axios'
 
 export default {
-  name: "LinkForm",
-  data() {
-    return {
-      link: '',
-      hashedLink: ''
+    name: "LinkForm",
+    data() {
+        return {
+            link: '',
+            hashedLink: ''
+        }
+    },
+    props: {
+        domain: String
+    },
+    methods: {
+        sendLink() {
+            axios.post(this.domain, { link: this.link})
+                .then(json => {
+                    this.message = json.data.message
+                    this.hashedLink = json.data.link
+                })
+                .catch(error => console.log(error))
+        }
     }
-  },
-  props: {
-    domain: String
-  },
-  methods: {
-    sendLink() {
-      axios.post(this.domain, { link: this.link})
-        .then(json => {
-          this.message = json.data.message
-          this.hashedLink = json.data.link
-        })
-        .catch(error => console.log(error))
-    }
-  }
 }
 </script>
 

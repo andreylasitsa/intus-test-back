@@ -51,4 +51,9 @@ th, tr {
 th {
     border-bottom: 1px solid black;
 }
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
 </style>

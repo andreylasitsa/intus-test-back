@@ -13,16 +13,19 @@ export default {
 </script>
 
 <template>
-    <main class="content">
-        <LinkForm :domain="domain"/>
-        <LinkList :domain="domain"/>
+    <header>
+        <router-link to="/">Link Form</router-link>
+        <router-link to="/list">Links List</router-link>
+    </header>
+    <main>
+        <router-view :domain="domain"></router-view>
     </main>
 </template>
 
 <style>
 @import './../css/app.css';
-.content {
-    align-self: center;
+main {
+    text-align: center;
 }
 #app {
     max-width: 1280px;
@@ -32,6 +35,12 @@ export default {
 }
 header {
     line-height: 1.5;
+    margin-bottom: 50px;
+    text-align: center;
+}
+header a {
+    padding-left: 5px;
+    padding-right: 5px;
 }
 .logo {
     display: block;
@@ -46,30 +55,6 @@ a,
 @media (hover: hover) {
     a:hover {
         background-color: hsla(160, 100%, 37%, 0.2);
-    }
-}
-@media (min-width: 1024px) {
-    body {
-        display: flex;
-        place-items: center;
-    }
-    #app {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        padding: 0 2rem;
-    }
-    header {
-        display: flex;
-        place-items: center;
-        padding-right: calc(var(--section-gap) / 2);
-    }
-    header .wrapper {
-        display: flex;
-        place-items: flex-start;
-        flex-wrap: wrap;
-    }
-    .logo {
-        margin: 0 2rem 0 0;
     }
 }
 </style>
