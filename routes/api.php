@@ -1,10 +1,5 @@
 <?php
 
-use App\Http\Controllers\LinkController;
-use App\Http\Middleware\CorsMiddleware;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,13 +10,4 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-Route::middleware(CorsMiddleware::class)->group(function() {
-    Route::post('/', [LinkController::class, 'hash']);
-    Route::get('/', [LinkController::class, 'index']);
-});
 
