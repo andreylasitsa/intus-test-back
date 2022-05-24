@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Actions\LinkHashAction;
+use App\Actions\LinkHashExistAction;
 use App\Actions\LinkUpdateAction;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,6 +22,10 @@ class LinkActionsProvider extends ServiceProvider
 
         $this->app->singleton(LinkUpdateAction::class, function ($app) {
             return new LinkUpdateAction();
+        });
+
+        $this->app->singleton(LinkHashExistAction::class, function ($app) {
+            return new LinkHashExistAction();
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LinkHashAction;
+use App\Actions\LinkHashExistAction;
 use App\Actions\LinkUpdateAction;
 use App\Http\Requests\HashRequest;
 use App\Models\Link;
@@ -16,16 +17,24 @@ class LinkController extends Controller
      * @var LinkHashAction
      */
     private $hash_action;
+    /**
+     * @var LinkUpdateAction
+     */
     private $update_action;
+    /**
+     * @var LinkHashExistAction
+     */
+    private $hash_exist_action;
 
     /**
      * LinkController constructor.
      * @param LinkHashAction $hasher
      */
-    public function __construct(LinkHashAction $hash_action, LinkUpdateAction $update_action)
+    public function __construct(LinkHashAction $hash_action, LinkUpdateAction $update_action, LinkHashExistAction $hash_exist_action)
     {
         $this->hash_action = $hash_action;
         $this->update_action = $update_action;
+        $this->hash_exist_action = $hash_exist_action;
     }
 
     /**
@@ -52,7 +61,14 @@ class LinkController extends Controller
             $response->setContent(['link' => url("/{$db_link->hash}")]);
             return $response;
         }
-        $link = ($this->update_action)($original_link, ($this->hash_action)($original_link));
+        $hash = ($this->hash_action)($original_link);
+        if(($this->hash_exist_action)($hash)) {
+            $response->setStatusCode(500);
+            $response->setContent(['message' => 'Hash collides']);
+            return $response;
+        }
+
+        $link = ($this->update_action)($original_link, $hash);
         $link->save();
         $response->setContent(['link' => url("/{$link->hash}")]);
         return $response;
