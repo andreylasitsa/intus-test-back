@@ -6,7 +6,11 @@ namespace App\Actions;
 
 class LinkHashAction
 {
-    public function __invoke($original_link)
+    /**
+     * @param $original_link
+     * @return false|string
+     */
+    public function __invoke($original_link): string
     {
         return substr(md5($original_link), 0, 6);
     }

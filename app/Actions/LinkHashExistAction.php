@@ -8,8 +8,12 @@ use App\Models\Link;
 
 class LinkHashExistAction
 {
-    public function __invoke($hash): bool {
-        $link = Link::where('hash', $hash)->first();
-        return (bool)$link;
+    /**
+     * @param $hash
+     * @return bool
+     */
+    public function __invoke($hash): bool
+    {
+        return (bool)Link::where('hash', $hash)->first();
     }
 }

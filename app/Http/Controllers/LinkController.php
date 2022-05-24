@@ -2,39 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\LinkHashAction;
-use App\Actions\LinkHashExistAction;
-use App\Actions\LinkUpdateAction;
+use App\Actions\LinkGenerateAction;
 use App\Http\Requests\HashRequest;
+use App\Http\Requests\LinkRequest;
 use App\Models\Link;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Redirect;
 
 class LinkController extends Controller
 {
     /**
-     * @var LinkHashAction
+     * @var LinkGenerateAction
      */
-    private $hash_action;
-    /**
-     * @var LinkUpdateAction
-     */
-    private $update_action;
-    /**
-     * @var LinkHashExistAction
-     */
-    private $hash_exist_action;
+    private $link_generator;
 
     /**
      * LinkController constructor.
-     * @param LinkHashAction $hasher
+     * @param LinkGenerateAction $link_generator
      */
-    public function __construct(LinkHashAction $hash_action, LinkUpdateAction $update_action, LinkHashExistAction $hash_exist_action)
+    public function __construct(LinkGenerateAction $link_generator)
     {
-        $this->hash_action = $hash_action;
-        $this->update_action = $update_action;
-        $this->hash_exist_action = $hash_exist_action;
+        $this->link_generator = $link_generator;
     }
 
     /**
@@ -43,45 +30,31 @@ class LinkController extends Controller
      */
     public function index(Response $response): Response
     {
-        $response->setContent(Link::all());
-
-        return $response;
+        return $response->setContent(Link::all());
     }
 
     /**
-     * @param HashRequest $request
+     * @param LinkRequest $request
      * @param Response $response
      * @return Response
      */
-    public function hash(HashRequest $request, Response $response): Response
+    public function hash(LinkRequest $request, Response $response): Response
     {
+        $request->rules();
         $original_link = $request->get('link');
-        $db_link = Link::where('original_link', $original_link)->first();
-        if($db_link != null) {
-            $response->setContent(['link' => url("/{$db_link->hash}")]);
-            return $response;
-        }
-        $hash = ($this->hash_action)($original_link);
-        if(($this->hash_exist_action)($hash)) {
-            $response->setStatusCode(500);
-            $response->setContent(['message' => 'Hash collides']);
-            return $response;
-        }
 
-        $link = ($this->update_action)($original_link, $hash);
-        $link->save();
-        $response->setContent(['link' => url("/{$link->hash}")]);
-        return $response;
+        return $response->setContent(($this->link_generator)($original_link));
     }
 
     /**
-     * @param $hash
+     * @param string $hash
+     * @param Response $response
      * @return \Illuminate\Http\RedirectResponse | Response
      */
-    public function redirect($hash, Response $response)
+    public function redirect(string $hash, Response $response)
     {
         $url = Link::select('original_link')->where('hash', $hash)->first();
-        if($url == null)
+        if ($url == null)
             return $response->setStatusCode(404);
 
         return redirect()->to($url->original_link);
