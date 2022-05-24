@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+    db:
+        image: mysql:5.7
+        container_name: "mysql57_db"
+        restart: always
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - ./docker/data:/var/lib/mysql
+        env_file:
+            - database.env
+        ports:
+            - 3306:3306
+    adminer:
+        container_name: "mysql57_adminer"
+        image: adminer
+        restart: always
+        ports:
+            - 8081:8080
