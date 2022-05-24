@@ -49,7 +49,7 @@ class LinkGenerateAction
         $hash = ($this->hash_action)($original_link);
 
         if (($this->hash_exist_action)($hash)) {
-            return ['error' => 'Hash collides'];
+            abort(500);
         }
 
         $link = ($this->update_action)($original_link, $hash);

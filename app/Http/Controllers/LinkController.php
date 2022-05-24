@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\LinkGenerateAction;
-use App\Http\Requests\HashRequest;
 use App\Http\Requests\LinkRequest;
 use App\Models\Link;
 use Illuminate\Http\Response;
@@ -40,7 +39,6 @@ class LinkController extends Controller
      */
     public function hash(LinkRequest $request, Response $response): Response
     {
-        $request->rules();
         $original_link = $request->get('link');
 
         return $response->setContent(($this->link_generator)($original_link));

@@ -29,7 +29,12 @@ export default {
                     this.message = json.data.message
                     this.hashedLink = json.data.link
                 })
-                .catch(error => console.log(error))
+                .catch(error => {
+                    if (error.response) {
+                        let errors_response = error.response.data.errors;
+                        alert(errors_response.link.join(' '));
+                    }
+                })
         }
     }
 }
