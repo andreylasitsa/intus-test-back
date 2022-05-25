@@ -30,7 +30,10 @@ class LinkGenerateAction
      * @param LinkHashExistAction $hash_exist_action
      * @param LinkCheckerAction $checker_action
      */
-    public function __construct(LinkHashAction $hash_action, LinkUpdateAction $update_action, LinkHashExistAction $hash_exist_action, LinkCheckerAction $checker_action)
+    public function __construct(LinkHashAction $hash_action,
+                                LinkUpdateAction $update_action,
+                                LinkHashExistAction $hash_exist_action,
+                                LinkCheckerAction $checker_action)
     {
         $this->hash_action = $hash_action;
         $this->update_action = $update_action;
@@ -49,8 +52,8 @@ class LinkGenerateAction
             return ['link' => url("/{$link->hash}")];
         }
 
-        if(!($this->checker_action)($original_link))
-            abort(422);
+        if (!($this->checker_action)($original_link))
+            abort(422, 'Your URL is unsafe!');
 
         $hash = ($this->hash_action)($original_link);
 

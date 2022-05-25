@@ -7,6 +7,7 @@ use App\Actions\LinkGenerateAction;
 use App\Actions\LinkHashAction;
 use App\Actions\LinkHashExistAction;
 use App\Actions\LinkUpdateAction;
+use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
 
 class LinkActionsProvider extends ServiceProvider
@@ -31,7 +32,7 @@ class LinkActionsProvider extends ServiceProvider
         });
 
         $this->app->singleton(LinkCheckerAction::class, function () {
-            return new LinkCheckerAction();
+            return new LinkCheckerAction(new Client());
         });
 
         $this->app->singleton(LinkGenerateAction::class, function ($app) {
