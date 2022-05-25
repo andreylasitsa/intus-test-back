@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\LinkCheckerAction;
 use App\Actions\LinkGenerateAction;
 use App\Actions\LinkHashAction;
 use App\Actions\LinkHashExistAction;
@@ -29,11 +30,16 @@ class LinkActionsProvider extends ServiceProvider
             return new LinkHashExistAction();
         });
 
+        $this->app->singleton(LinkCheckerAction::class, function () {
+            return new LinkCheckerAction();
+        });
+
         $this->app->singleton(LinkGenerateAction::class, function ($app) {
             return new LinkGenerateAction(
                 $app->get(LinkHashAction::class),
                 $app->get(LinkUpdateAction::class),
-                $app->get(LinkHashExistAction::class)
+                $app->get(LinkHashExistAction::class),
+                $app->get(LinkCheckerAction::class)
             );
         });
     }
